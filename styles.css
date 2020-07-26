@@ -1,0 +1,44 @@
+body {
+  background-color: grey;
+  font-family: "Lato", sans-serif;
+  margin: 0px;
+}
+.navbar-container {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.projects-container {
+  background-color: lightcyan;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.project {
+  position: relative;
+}
+
+.league-profile {
+  display: flex;
+}
+
+.league-stat {
+  background-color: lightblue;
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+.left-side {
+  display: flex;
+}
+
+.navbar > .left-side > div {
+  margin-right: 20px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  padding: 38px;
+}
