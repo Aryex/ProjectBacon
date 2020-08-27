@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- nav bar: Projects, about -->
+<!-- body: game stat tracker. -->
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home Page</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="stylesheets/styles.css" />
+  </head>
+  <body>
+    <div class="navbar-container">
+      <div class="navbar">
+        <div class="left-side">
+          <div class="nav-link-wrapper">
+            <a href="index.html">Home</a>
+          </div>
+
+          <div class="nav-link-wrapper">
+            <a href="about.html">About</a>
+          </div>
+        </div>
+        <div class="right-side">@MakingHandties</div>
+      </div>
+    </div>
+
+    <div class="projects-container">
+      <div class="project">
+        <div
+          class="project-background-img"
+          style="background-image: url(resources/bacon.jpg);"
+        ></div>
+        <div class="project-text-wrapper">
+          <div class="logo-wrapper">
+            <image src="resources/logos/nodejs.jpg"></image>
+          </div>
+          <div class="project-text">
+            Project bacon: retreving stats from Riot API using a local server.
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div
+          class="project-background-img"
+          style="background-image: url(resources/default.jpeg);"
+        ></div>
+        <div class="project-text-wrapper">
+          <div class="logo-wrapper">
+            <image src="resources/logos/default.jpg"></image>
+          </div>
+          <div class="project-text">
+            TBD: nothing yet! More tp come in the future
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const projects = document.querySelectorAll(".project");
+
+    projects.forEach((project) => {
+      project.addEventListener("mouseover", () => {
+        project.childNodes[1].classList.add("image-blur");
+      });
+
+      project.addEventListener("mouseout", () => {
+        project.childNodes[1].classList.remove("image-blur");
+      });
+    });
+  </script>
+</html>
