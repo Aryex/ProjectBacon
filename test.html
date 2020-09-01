@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- nav bar: Projects, about -->
-<!-- body: game stat tracker. -->
+<!-- Match container-->
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -52,53 +51,44 @@
       }
     </style>
   </head>
-
   <body>
-    <!-- Nav Bar -->
-    <nav
-      id="navBar"
-      class="navbar navbar-expand-sm bg-light justify-content-center"
+    <div
+      class="match-container d-flex flex-row shadow-noshadow p-3 bg-primary rounded"
     >
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="league-stat.html">League Stats</a>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Banner -->
-    <div class="container-fluid player-container" style="text-align: center">
-      <div id="main" class="jumbotron">
+      <div class="container-inline">
         <image
-          src="resources/irelia.jpg"
+          src="public/resources/irelia.jpg"
           alt="Irelia"
           class="champ-icon rounded-circle"
         />
-        <h1 id="playerName" class="display-4"></h1>
-        <p id="playerRanking" class="lead"></p>
+        <p style="text-align: center; margin-top: 5px">Irelia</p>
+      </div>
 
-        <hr class="my-4" />
-        <p>Recent games stats</p>
-        <p class="lead">
-          <button
-            class="btn btn-primary"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapseExample"
-            aria-expanded="false"
-            aria-controls="collapseExample"
-          >
-            More Stats!
-          </button>
-        </p>
-
-        <!-- Stats Collapse -->
-        <div class="collapse show" id="collapseExample">
-          <div class="card card-body">STATS!</div>
+      <!-- Type/Result -->
+      <div class="container-inline ml-5 vertical-middle">
+        <h1>Victory</h1>
+        <hr class="my-2" />
+        <h5>Ranked Solo/Duo</h5>
+        <h5>32 min</h5>
+      </div>
+      <!-- KDA -->
+      <div class="container-inline ml-5 vertical-middle justify-content-center">
+        <h2>0 / 0 / 0</h2>
+        <div class="container justify-content-center">
+          <image src="public/resources/flash.jpg" width="30px"></image>
+          <image src="public/resources/ignite.jpg" width="30px"></image>
         </div>
+      </div>
+      <!-- Quick stats -->
+      <div class="container-inline ml-5 vertical-middle">
+        <h5>CS: 231 (6.4)</h5>
+        <h5>KP: 31%</h5>
+        <h5>DShare: 41%</h5>
+        <h5>DPS: 41%</h5>
+      </div>
+      <!-- Build and opponents -->
+      <div class="container-inline">
+        <p style="text-align: center">TBD</p>
       </div>
     </div>
   </body>

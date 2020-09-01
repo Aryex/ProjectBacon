@@ -1,11 +1,9 @@
 const http = require("http");
 const url = require("url");
 const fs = require("fs");
-
 const mime = require("mime-types");
 const path = require("path");
-
-const PORT = 8080;
+const config = require("./config");
 
 const server = http
   .createServer(function (req, res) {
@@ -19,10 +17,9 @@ const server = http
     }
     serve(path, res);
   })
-  .listen(PORT);
+  .listen(config.LocalPort);
 
 function serve(path, response) {
-  // starts riot api.
   fs.exists(path, function (exists) {
     if (exists) {
       fs.readFile(path, function (err, data) {
@@ -41,8 +38,6 @@ function serve(path, response) {
   });
 }
 
-// create riotAPI server and listen on port.
-
 function send404(response) {
   response.writeHead(404, { "Content-Type": "text/plain" });
   response.write("Error 404: resource not found.");
@@ -56,5 +51,4 @@ function sendFile(response, filePath, fileContents) {
   response.end(fileContents);
 }
 
-const riotAPI = require("./RiotApi.js");
-riotAPI.listen(server);
+require("./RiotApiController.js").start(server, config);

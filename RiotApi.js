@@ -1,77 +1,54 @@
 const https = require("https");
-var socketio = require("socket.io");
-var io;
 
-// var playerAcc, playerAccId, playerSumId;
-var playerAccount;
+var ApiKey;
 
-exports.listen = (server) => {
-  io = socketio.listen(server);
+exports.start = (key) => {
+  ApiKey = key;
+};
 
-  io.sockets.on("connection", (socket) => {
-    console.log("connection");
-    socket.emit("ready", "This is Player Hello!");
-    handleCommand(socket);
+exports.request = function (req) {
+  return new Promise((success, reject) => {
+    https
+      .get(req, (res) => {
+        console.log("Respond status code: " + res.statusCode);
+        let statusCode = res.statusCode;
+        let dataChunks = "";
+        res.on("data", (chunk) => {
+          dataChunks += chunk;
+        });
+
+        res.on("end", () => {
+          let data = JSON.parse(dataChunks);
+          let dataWrapper;
+          if (res.statusCode != 200) {
+            console.log("ERROR");
+            console.log("PATH:" + req.path);
+            console.log(data);
+            dataWrapper = new Respond(statusCode, data.status.message);
+            if (reject != null) reject(dataWrapper);
+          } else {
+            dataWrapper = new Respond(statusCode, data);
+          }
+          if (success != null) success(dataWrapper);
+        });
+      })
+      .on("error", (e) => {
+        reject(dataWrapper);
+        console.error(e);
+      });
   });
 };
 
-function handleCommand(socket) {
-  console.log("Api ready");
-
-  socket.on("getPlayer", (name) => {
-    console.log("getPlayer");
-    makeRequest(getPlayerByName(name), (data) => {
-      playerName = data.name;
-      playerAccId = data.accountId;
-      playerSumId = data.id;
-      playerAccount = { ...data };
-      console.log(playerAccount);
-      socket.emit("getPlayer", playerAccount.name);
-    });
-  });
-
-  socket.on("getRankingData", (data) => {
-    console.log("getRanking");
-    makeRequest(getPlayerRankingData(), (data) => {
-      console.log("GET RANKING");
-      console.log(data);
-    });
-  });
-
-  socket.on("getMatches", () => {
-    console.log("getMatches");
-    makeRequest(getMatches(), (matches) => {
-      //console.log(matches);
-      socket.emit("getMatches", matches);
-    });
-  });
-}
-
-function makeRequest(req, callback) {
-  console.log(req);
-  https
-    .get(req, (res) => {
-      console.log(res.headers);
-      let dataChunks = "";
-      res.on("data", (chunk) => {
-        dataChunks += chunk;
-      });
-
-      res.on("end", () => {
-        let data = JSON.parse(dataChunks);
-        // console.log("data " + data);
-        if (callback != null) {
-          callback(data);
-        }
-      });
-    })
-    .on("error", function (e) {
-      console.error(e);
-    });
+/* 
+Data object
+*/
+function Respond(code, data) {
+  this.code = code;
+  this.data = data;
 }
 
 /* 
-Option factories
+Global HTTPS option factories
 */
 function options(path) {
   return {
@@ -79,22 +56,40 @@ function options(path) {
     method: "GET",
     path: path,
     headers: {
-      "X-Riot-Token": "RGAPI-29ae54ff-35ab-4ba9-a961-2dfb60698732",
+      "X-Riot-Token": ApiKey,
     },
   };
 }
 
-function getPlayerByName(name) {
+global.option = function (path) {
+  return options(path);
+};
+
+global.matchByGameId = (gameId) => {
+  return options("/lol/match/v4/matches/" + gameId);
+};
+
+global.playerByName = function (name) {
   return options("/lol/summoner/v4/summoners/by-name/" + name);
-}
+};
 
-function getMatches() {
-  return options(
-    "/lol/match/v4/matchlists/by-account/" + playerAccount.accountId
-  );
-}
+global.matchListByAccId = function (accountId, endIndex, beginIndex) {
+  let path = "/lol/match/v4/matchlists/by-account/" + accountId;
+  if (beginIndex != undefined) {
+    path += "?beginIndex=" + beginIndex;
+    if (endIndex != undefined) {
+      path += "&endIndex=" + endIndex;
+    }
+  } else if (endIndex != undefined) {
+    path += "?endIndex=" + endIndex;
+  }
 
-function getPlayerRankingData() {
-  console.log(playerSumId);
-  return options("/lol/league/v4/entries/by-summoner/" + playerAccount.id);
-}
+  // console.log(path);
+
+  return options(path);
+};
+
+// Get player match histories by summonerId
+global.rankingBySumId = function (summonerId) {
+  return options("/lol/league/v4/entries/by-summoner/" + summonerId);
+};
