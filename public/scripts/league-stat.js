@@ -5,12 +5,22 @@ $(document).ready(() => {
   socket.on("ready", (data) => {
     console.log("Ready!");
   });
+  let dDragon;
+  fetch("https://ddragon.leagueoflegends.com/api/versions.json")
+    .then((res) => res.json())
+    .then((versions) => {
+      console.log("Patch: " + versions[0]);
+      dDragon = new DDragon(versions[0]);
+    })
+    .catch((reject) => console.log(reject));
 
   socket.emit("getPlayer", playerName, { endIndex: 5, beginIndex: 0 });
   socket.on("getPlayer", (package) => {
     console.log("Got player!");
     console.log(package);
+    let playerAccount = package.playerAccount;
     $("#playerName").text(package.playerAccount.name);
+    $("#playerIcon").attr("src", dDragon.getIcon(playerAccount.profileIconId));
 
     for (let i = 0; i < package.matches.endIndex; i++) {
       $("#main").append(matchFactory(i));
@@ -60,6 +70,16 @@ function handleErrorHttp(res) {
   console.log("ERROR: getRankingData");
   console.log(res.data);
   $("#navBar").after(makeErrorAlert(res.code, res.data));
+}
+
+/* 
+Data Dragon CDN generator;
+*/
+function DDragon(patch) {
+  this.url = "http://ddragon.leagueoflegends.com/cdn/" + patch;
+  this.getIcon = (iconNum) => {
+    return this.url + "/img/profileicon/" + iconNum + ".png";
+  };
 }
 
 /* 
