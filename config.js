@@ -1,5 +1,5 @@
 var config = {
-  ApiKey: "RGAPI-cf5e5fdb-f16f-401d-99ca-2e800667cec3",
+  ApiKey: "",
   Region: "na1.api.riotgames.com",
   LocalPort: "8080",
 };
