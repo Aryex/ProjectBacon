@@ -8,88 +8,254 @@
       href="https://fonts.googleapis.com/css?family=Lato"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="stylesheets/styles.css" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <!-- CSS -->
+    <link rel="stylesheet" href="public/stylesheets/match.css" />
+
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Bootstraps -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
     <script src="./scripts/league-stat.js"></script>
-
-    <style>
-      .vertical-middle {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .player-container {
-        width: 1200px;
-        height: 500px;
-        margin-top: 10px;
-      }
-      .match-container {
-        width: 1000px;
-        height: 150px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 5px;
-        margin-top: 5px;
-      }
-      .champ-icon {
-        width: 100px;
-        height: 100px;
-      }
-      .centered-text {
-        text-align: center;
-      }
-    </style>
   </head>
-  <body>
-    <div
-      class="match-container d-flex flex-row shadow-noshadow p-3 bg-primary rounded"
-    >
-      <div class="container-inline">
-        <!-- src="public/resources/irelia.jpg" -->
-        <image
-          src="http://ddragon.leagueoflegends.com/cdn/10.16.1/img/champion/Aatrox.png"
-          alt="Irelia"
-          class="champ-icon rounded-circle"
-        />
-        <p style="text-align: center; margin-top: 5px">Irelia</p>
-      </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script>
+    $(document).ready(() => {
+      $("body").append(matchHistory);
+    });
 
-      <!-- Type/Result -->
-      <div class="container-inline ml-5 vertical-middle">
-        <h1>Victory</h1>
-        <hr class="my-2" />
-        <h5>Ranked Solo/Duo</h5>
-        <h5>32 min</h5>
+    function matchHistory() {
+      $heanding = $('<div class="match-header">')
+        .append("<div>3 days ago</div>")
+        .append("<div>40 mins</div>")
+        .append("<div>Avg rating: Plat 4</div>");
+
+      // Creating body
+      $body = $('<div class="match-body rounded-bottom p-1">')
+        .append($matchResult())
+        .append($pickDetail())
+        .append($stats())
+        .append($playerBuild())
+        .append($teams());
+
+      return $('<div class="match-wrapper">').append($heanding).append($body);
+    }
+
+    function $teams() {
+      $teamBlue = $('<div class"team-blue>');
+      for (i = 0; i < 5; i++) {
+        $teamBlue.append($teamMember());
+      }
+
+      $teamRed = $('<div class"team-red>');
+      for (i = 0; i < 5; i++) {
+        $teamRed.append($teamMember());
+      }
+
+      return $('<div class="teams-wrapper">')
+        .append($teamBlue)
+        .append($teamRed);
+    }
+
+    function $teamMember() {
+      return $('<div class="team-member">')
+        .append('<img src="public/resources/Irelia.png" />')
+        .append("<div>MakingHandties</div>");
+    }
+
+    function $matchResult() {
+      return $("<div>")
+        .addClass("match-result")
+        .append('<div class="win-text">Victory</div>')
+        .append('<hr class="my-1" />')
+        .append('<div class="type-text">Ranked</div>')
+        .append('<div class="type-text">Solo Duo</div>');
+    }
+
+    function $stats() {
+      return $("<div>")
+        .addClass("stats-wrapper vertical-middle")
+        .append("<h4>0 / 0 / 0</h4>")
+        .append(
+          $('<div class="stats">')
+            .append("<div>CS: 231 (6.4)</div>")
+            .append("<div>Dmg Share: 41%</div>")
+            .append(" <div>Participation: 41%</div>")
+        );
+    }
+
+    function $playerBuild() {
+      $items = $('<div class="items">');
+      for (i = 0; i < 6; i++) {
+        $items.append('<img src="public/resources/Conqueror.png" />');
+      }
+      $inventory = $('<div class="inventory">')
+        .append($items)
+        .append(
+          $(' <div class="trinket">').append(
+            '<img src="public/resources/7203_Whimsy.png"/>'
+          )
+        );
+
+      return $("<div>")
+        .addClass("player-build-wrapper")
+        .append($inventory)
+        .append($("<div>").text("Control wards: 5"))
+        .append($("<div>").text("Hourglass: Yes"));
+    }
+
+    function $pickDetail() {
+      champIcon =
+        "http://ddragon.leagueoflegends.com/cdn/10.16.1/img/champion/Irelia.png";
+      summ1 = "public/resources/flash.jpg";
+      summ2 = "public/resources/ignite.jpg";
+      keystone = "public/resources/Conqueror.png";
+      rune = "public/resources/7203_Whimsy.png";
+      champName = "Irelia";
+
+      $champIcon = $("<img>").addClass("champ-icon").attr("src", champIcon);
+      $summSpell = $("<div>")
+        .addClass("summoner-spell")
+        .append($("<img>").attr("src", summ1))
+        .append($("<img>").attr("src", summ2));
+
+      $runes = $("<div>")
+        .addClass("runes")
+        .append($("<img>").attr("src", keystone))
+        .append($("<img>").attr("src", rune));
+
+      $pickDetail = $("<div>")
+        .addClass("pick-detail")
+        .append($champIcon, $summSpell, $runes);
+
+      $champName = $("<div>").addClass("name").text(champName);
+
+      return $("<div>")
+        .addClass("pick-detail-wrapper")
+        .append($pickDetail)
+        .append($champName);
+    }
+  </script>
+  <body>
+    <div class="match-wrapper" style="margin-top: 300px">
+      <!-- Heading -->
+      <div class="match-header">
+        <div>3 days ago</div>
+        <div>40 mins</div>
+        <div>Avg rating: Plat 4</div>
       </div>
-      <!-- KDA -->
-      <div class="container-inline ml-5 vertical-middle justify-content-center">
-        <h2>0 / 0 / 0</h2>
-        <div class="container justify-content-center">
-          <image src="public/resources/flash.jpg" width="30px"></image>
-          <image src="public/resources/ignite.jpg" width="30px"></image>
+      <!-- Body -->
+      <div class="match-body shadow-noshadow rounded-bottom p-1">
+        <!-- Match result -->
+        <div class="match-result">
+          <div class="win-text">Victory</div>
+          <hr class="my-1" />
+          <div class="type-text">Ranked</div>
+          <div class="type-text">Solo Duo</div>
         </div>
-      </div>
-      <!-- Quick stats -->
-      <div class="container-inline ml-5 vertical-middle">
-        <h5>CS: 231 (6.4)</h5>
-        <h5>KP: 31%</h5>
-        <h5>DShare: 41%</h5>
-        <h5>DPS: 41%</h5>
-      </div>
-      <!-- Build and opponents -->
-      <div class="container-inline">
-        <p style="text-align: center">TBD</p>
+
+        <!-- Champion Icon -->
+        <div class="pick-detail-wrapper">
+          <div class="pick-detail">
+            <img
+              class="champ-icon"
+              src="http://ddragon.leagueoflegends.com/cdn/10.16.1/img/champion/Irelia.png"
+              alt="Irelia"
+            />
+            <div class="summoner-spell">
+              <img src="public/resources/flash.jpg" />
+              <img src="public/resources/ignite.jpg" />
+            </div>
+            <div class="runes">
+              <img src="public/resources/Conqueror.png" />
+              <img src="public/resources/7203_Whimsy.png" />
+            </div>
+          </div>
+          <div class="name">Irelia</div>
+        </div>
+
+        <!-- KDA -->
+        <div class="stats-wrapper vertical-middle">
+          <h4>0 / 0 / 0</h4>
+          <div class="stats">
+            <div>CS: 231 (6.4)</div>
+            <div>Dmg Share: 41%</div>
+            <div>Participation: 41%</div>
+          </div>
+        </div>
+
+        <!-- items -->
+        <div class="player-build-wrapper">
+          <div class="inventory">
+            <div class="items">
+              <img src="public/resources/Conqueror.png" />
+              <img src="public/resources/7203_Whimsy.png" />
+              <img src="public/resources/Conqueror.png" />
+              <img src="public/resources/7203_Whimsy.png" />
+              <img src="public/resources/Conqueror.png" />
+              <img src="public/resources/7203_Whimsy.png" />
+            </div>
+            <div class="trinket">
+              <img src="public/resources/7203_Whimsy.png" width="25px" />
+            </div>
+          </div>
+          <div>Control wards: 5</div>
+          <div>Hourglass: Yes</div>
+        </div>
+
+        <!-- Teams -->
+        <div class="teams-wrapper">
+          <div class="team-blue">
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+          </div>
+          <div class="team-red">
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+            <div class="team-member">
+              <img src="public/resources/Irelia.png" />
+              <div>MakingHandties</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

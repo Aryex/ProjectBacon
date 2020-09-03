@@ -1,0 +1,184 @@
+body {
+  color: rgb(65, 64, 64);
+}
+.vertical-middle {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.player-container {
+  width: 1200px;
+  height: 500px;
+  margin-top: 10px;
+}
+.match-wrapper {
+  margin: auto;
+  width: 700px;
+}
+.match-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  background-color: #a8c5fc;
+  /* background-color: #47ffa9 */
+}
+.match-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #6c9ffd;
+}
+.match-header > div {
+  font-size: 11px;
+  margin-left: 5px;
+  margin-right: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.pick-detail-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.pick-detail-wrapper > .name {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 5px;
+}
+.pick-detail {
+  display: flex;
+  flex-direction: row;
+  vertical-align: baseline;
+  margin-left: 10px;
+}
+
+.champion-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.champ-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+.match-result {
+  margin: auto;
+  margin-left: 8px;
+}
+.match-result > .win-text {
+  font-size: 22px;
+}
+.match-result > .type-text {
+  font-size: 13px;
+}
+.centered-text {
+  text-align: center;
+}
+.match-stats-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin-left: 40px;
+}
+
+.summoner-spell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 3px;
+}
+.summoner-spell > img {
+  width: 25px;
+}
+.runes {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 3px;
+}
+.runes > img {
+  width: 25px;
+}
+.match-stats > div {
+  font-size: 10px;
+  text-align: center;
+}
+.player-build-wrapper {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 40px;
+  font-size: 11px;
+  text-align: start;
+}
+.inventory {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 120px;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 5px;
+  justify-content: space-around;
+  width: 90px;
+  height: 60px;
+}
+
+.items > img {
+  width: 25px;
+  height: 25px;
+  background-color: grey;
+  border-radius: 3px;
+}
+
+.trinket {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.trinket > img {
+  width: 25px;
+}
+
+.teams-wrapper {
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+  width: 170px;
+  justify-content: space-evenly;
+  margin-left: 10px;
+  /* background: grey; */
+}
+
+.team-red,
+.team-blue {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.team-member {
+  display: flex;
+  flex-direction: row;
+  width: 75px;
+  /* background-color: white; */
+}
+.team-member > div {
+  width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.team-member > img {
+  margin-top: 1px;
+  width: 17px;
+}

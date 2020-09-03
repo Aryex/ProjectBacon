@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="stylesheets/styles.css" />
+    <link rel="stylesheet" href="stylesheets/match.css" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -23,32 +24,89 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="/socket.io/socket.io.js" type="text/javascript"></script>
-    <script src="./scripts/league-stat.js"></script>
+    <script src="./scripts/league-stat-controller.js"></script>
+    <script src="./scripts/create-match.js"></script>
 
     <style>
       .vertical-middle {
         margin-top: auto;
         margin-bottom: auto;
       }
-      .player-container {
-        width: 1200px;
+      .content-wrapper {
+        margin: auto;
+        width: 1400px;
+      }
+
+      .player-header {
+        display: flex;
+      }
+
+      .player-banner {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
         height: 500px;
-        margin-top: 10px;
+        width: 1200px;
+
+        background-color: grey;
+
+        background-image: url("resources/splash/Irelia_0.jpg");
+        background-repeat: no-repeat;
+        object-fit: cover;
       }
-      .match-container {
-        width: 1000px;
-        height: 150px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 5px;
-        margin-top: 5px;
+      .player-icon-wrapper {
+        display: flex;
+        background-color: rgb(78, 78, 199);
+        text-align: start;
+        margin-left: 10px;
+        height: fit-content;
       }
-      .champ-icon {
+      .player-icon-wrapper > img {
+        margin: 5px;
         width: 100px;
         height: 100px;
+        border-radius: 50%;
       }
-      .centered-text {
-        text-align: center;
+
+      .player-icon-stats {
+        margin-left: 10px;
+        font-size: 15px;
+        margin: 0px;
+      }
+      .main-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin-top: 20px;
+      }
+      .overall-stats-wrapper {
+        width: 700px;
+      }
+      .stats-container {
+        height: 300px;
+        width: 650px;
+        margin-bottom: 20px;
+        margin-right: 50px;
+        border-radius: 5px;
+        background-color: lightgrey;
+      }
+      .match-history {
+        background-color: red;
+      }
+      .player-trophies {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 200px;
+        height: inherit;
+        background-color: grey;
+      }
+      .trophy {
+        width: 150px;
+        height: 150px;
+        border-radius: 5%;
+        background-color: lightgrey;
+        margin-left: 25px;
       }
     </style>
   </head>
@@ -69,32 +127,32 @@
       </ul>
     </nav>
 
-    <!-- Banner -->
-    <div class="container-fluid player-container" style="text-align: center">
-      <div id="main" class="jumbotron">
-        <image id="playerIcon" class="champ-icon" />
-        <h1 id="playerName" class="display-4"></h1>
-        <p id="playerRanking" class="lead"></p>
-
-        <hr class="my-4" />
-        <p>Recent games stats</p>
-        <p class="lead">
-          <button
-            class="btn btn-primary"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapseExample"
-            aria-expanded="false"
-            aria-controls="collapseExample"
-          >
-            More Stats!
-          </button>
-        </p>
-
-        <!-- Stats Collapse -->
-        <div class="collapse show" id="collapseExample">
-          <div class="card card-body">STATS!</div>
+    <div class="content-wrapper">
+      <!-- Player Profile -->
+      <div class="player-header">
+        <div class="player-banner">
+          <div class="player-icon-wrapper">
+            <div>
+              <h1 id="playerName" class="heading-1 m-0"></h1>
+              <hr class="m-0" />
+              <p id="playerRanking" class="player-icon-stats lead mt-1"></p>
+              <p id="playerLevel" class="player-icon-stats lead"></p>
+            </div>
+          </div>
         </div>
+        <div class="player-trophies">
+          <div class="trophy"></div>
+          <div class="trophy"></div>
+          <div class="trophy"></div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="overall-stats-wrapper">
+          <div class="stats-container"></div>
+          <div class="stats-container"></div>
+        </div>
+        <div class="match-history"></div>
       </div>
     </div>
   </body>
