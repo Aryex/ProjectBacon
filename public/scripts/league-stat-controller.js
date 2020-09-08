@@ -5,30 +5,65 @@ $(document).ready(() => {
   socket.on("ready", (data) => {
     console.log("Ready!");
   });
-  let dDragon;
-  fetch("https://ddragon.leagueoflegends.com/api/versions.json")
-    .then((res) => res.json())
-    .then((versions) => {
-      console.log("Patch: " + versions[0]);
-      dDragon = new DDragon(versions[0]);
-    })
-    .catch((reject) => console.log(reject));
 
   socket.emit("getPlayer", playerName, { endIndex: 5, beginIndex: 0 });
   socket.on("getPlayer", (package) => {
     console.log("Got player!");
     console.log(package);
+    let dDragon = DDragon.getInstance(package.gameVersion);
     let playerAccount = package.playerAccount;
     $("#playerName").text(package.playerAccount.name);
     $("#playerLevel").text("Level " + package.playerAccount.summonerLevel);
     $(".player-icon-wrapper").prepend(
-      $('<img src="' + dDragon.getIcon(playerAccount.profileIconId) + '">')
+      $('<img src="' + dDragon.iconCdn(playerAccount.profileIconId) + '">')
     );
 
+    let matchList = package.matchList;
     let $matchHistory = $(".match-history");
-    for (let i = 0; i < package.matches.endIndex; i++) {
-      $matchHistory.append(createMatch());
-    }
+    /* 
+    Creating Match History
+     */
+    let championData, summData, runesData;
+    fetch(dDragon.championDataCdn())
+      .then((res) => res.json())
+      .then((data) => {
+        championData = data;
+        return fetch(dDragon.summDataCdn());
+      })
+      .then((res) => res.json())
+      .then((json) => {
+        summData = json;
+        return fetch(dDragon.runesDataCdn());
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        runesData = data;
+        return fetch(dDragon.itemsDataCdn());
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        itemsData = data;
+        for (let i = 0; i < matchList.endIndex; i++) {
+          // let playerPId = matchList.matches[i].playerPId;
+          // let champId =
+          //   matchList.matches[i].participants[playerPId - 1].championId;
+          // playerChampionData = findChampionData(entries, champId);
+          $matchHistory.append(
+            createMatch(
+              matchList.matches[i],
+              championData,
+              summData,
+              runesData,
+              itemsData
+            )
+          );
+        }
+      })
+
+      .catch((rej) => {
+        console.log(rej);
+      });
 
     let txt;
     let rankingData = package.playerRanking;
@@ -42,31 +77,6 @@ $(document).ready(() => {
       winRate.toFixed(2) +
       "%";
     $("#playerRanking").text(txt);
-
-    // socket.emit("getMatches", 0, 10);
-    // socket.on("getMatches", (data) => {
-    //   console.log(data);
-    //   let matches = data;
-    //   console.log("Endindex " + matches.endIndex);
-    //   let numberOfmatches = 20 < matches.endIndex ? 20 : matches.endIndex;
-    //   for (let i = 0; i < numberOfmatches; i++) {
-    //     $("#main").append(matchFactory(i));
-    //   }
-    // });
-
-    // socket.emit("getRankingData");
-    // socket.on("getRankingData", (res) => {
-    //   let txt;
-    //   if (res.code !== 200) {
-    //     txt = "Error retrieving Ranked data";
-    //     handleErrorHttp(res);
-    //   } else {
-    //     let data = res.data[0];
-    //     let winRate = data.wins / ((data.losses + data.wins) / 100);
-    //     txt = data.tier + " " + data.rank + ", " + winRate.toFixed(2) + "%";
-    //   }
-    //   $("#playerRanking").text(txt);
-    // });
   });
 });
 
@@ -79,12 +89,6 @@ function handleErrorHttp(res) {
 /* 
 Data Dragon CDN generator;
 */
-function DDragon(patch) {
-  this.url = "http://ddragon.leagueoflegends.com/cdn/" + patch;
-  this.getIcon = (iconNum) => {
-    return this.url + "/img/profileicon/" + iconNum + ".png";
-  };
-}
 
 /* 
 HTTP Error Factory

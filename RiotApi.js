@@ -65,6 +65,17 @@ global.option = function (path) {
   return options(path);
 };
 
+global.gameVersions = () => {
+  return {
+    hostname: "ddragon.leagueoflegends.com",
+    method: "GET",
+    path: "/api/versions.json",
+    headers: {
+      "X-Riot-Token": ApiKey,
+    },
+  };
+};
+
 global.matchByGameId = (gameId) => {
   return options("/lol/match/v4/matches/" + gameId);
 };
