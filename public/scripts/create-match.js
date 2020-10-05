@@ -118,6 +118,8 @@ function $teams(match, playerId) {
     redTeam = new Array();
   let error = false;
 
+  console.log("game id: " + match.gameId);
+
   match.participants.forEach((participant) => {
     // Blue team has id <= 5
     let team;
@@ -125,18 +127,22 @@ function $teams(match, playerId) {
       match.participantIdentities[participant.participantId - 1].player
         .summonerName;
     let _isPlayer = participant.participantId == playerId;
-    let championImage = findChampionData(participant.championId).image;
+
     let teamMember = {
       name: participantName,
-      image: championImage,
+      image: findChampionData(participant.championId).image,
       isPlayer: _isPlayer,
     };
 
     if (participant.participantId <= 5) {
       team = blueTeam;
+      console.log("Blue team:");
     } else {
       team = redTeam;
+      console.log("Red team:");
     }
+
+    console.log("LANE " + participant.timeline.lane);
 
     switch (participant.timeline.lane) {
       case "TOP":
@@ -163,9 +169,9 @@ function $teams(match, playerId) {
   });
 
   console.log("BLUE: ");
-  console.log(blueTeam[0].image);
+  // console.log(blueTeam[0].image);
   blueTeam.forEach((player) => {
-    console.log(player.image);
+    console.log(player);
   });
   console.log("RED: ");
   redTeam.forEach((player) => {

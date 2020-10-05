@@ -1,4 +1,4 @@
-var socket = io.connect();
+var socket = io.connect("http://10.0.0.194:8080");
 
 $(document).ready(() => {
   let playerName = "makinghandties";
