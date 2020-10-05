@@ -1,5 +1,5 @@
 # ProjectBacon
-Full stack Riot-API project. 
+Web application fetching data from Riot-API . 
 
 config file:
 var config = {
